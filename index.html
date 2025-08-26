@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manual Link</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            color: #333;
+            background-image: url('https://media.discordapp.net/attachments/1075818158297980969/1409696299846205590/switch.jpeg?ex=68ae517c&is=68acfffc&hm=178ae045a674be73e18393ae3186268374e3131fb1e409afa8ff283e543a4b35&=&format=webp&width=1031&height=581');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .content {
+            text-align: right;
+            padding: 20px;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        p {
+            font-size: 1.2em;
+            background-color: transparent;
+            padding: 10px;
+            margin: 5px 0 0 0;
+        }
+        a {
+            color: #0066cc;
+            text-decoration: underline;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        a:hover {
+            color: #003366;
+        }
+        .hashtag {
+            font-size: 1.5em;
+            color: #2fe0ba;
+            background-color: transparent;
+            margin: 0;
+            padding-top: 2px;
+        }
+        .hashtag a {
+            color: #2fe0ba;
+            text-decoration: none; /* Eliminar subrayado del enlace del hashtag */
+        }
+        .hashtag a:hover {
+            color: #24b395; /* Tono más oscuro para el hover, coherente con el verde azulado */
+        }
+        .footer {
+            position: absolute;
+            bottom: 0;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 1);
+        }
+        .footer p {
+            font-size: 0.9em;
+            margin: 0 10px 0 0;
+            background-color: transparent;
+        }
+        .footer img {
+            width: 50px;
+            height: auto;
+            margin-left: 10px;
+        }
+        .language-selector {
+            text-align: right;
+            margin-bottom: 15px;
+            margin-right: 20px;
+        }
+        .language-selector select {
+            padding: 5px;
+            font-size: 1em;
+            min-width: 150px;
+            z-index: 2000;
+        }
+        #loading {
+            display: none;
+            font-size: 1em;
+            color: #0066cc;
+            margin-top: 10px;
+            background-color: transparent;
+        }
+    </style>
+    <script>
+        // Objeto de traducciones
+        const translations = {
+            es: {
+                title: "Enlace Manual",
+                loading: "Cargando enlace...",
+                linkText: "Click <a onclick=\"abrirEnlace('{url}')\" id=\"mediafire-link\">aquí</a> para acceder a los archivos.",
+                hashtag: "<a href=\"https://x.com/Kelonio3DS\" target=\"_blank\">#TeAmoKelonio</a>",
+                footer: "¡Visítanos en <a href=\"https://discord.gg/8Fv8GDg\" target=\"_blank\">Discord</a> para cualquier duda!",
+                processing: "Procesando, por favor espera...",
+                selectLanguage: "Seleccionar idioma"
+            },
+            en: {
+                title: "Manual Link",
+                loading: "Loading link...",
+                linkText: "Click <a onclick=\"abrirEnlace('{url}')\" id=\"mediafire-link\">here</a> to access the files.",
+                hashtag: "<a href=\"https://x.com/Kelonio3DS\" target=\"_blank\">#TeAmoKelonio</a>",
+                footer: "Visit us on <a href=\"https://discord.gg/8Fv8GDg\" target=\"_blank\">Discord</a> for any questions!",
+                processing: "Processing, please wait...",
+                selectLanguage: "Select language"
+            },
+            fr: {
+                title: "Lien Manuel",
+                loading: "Chargement du lien...",
+                linkText: "Cliquez <a onclick=\"abrirEnlace('{url}')\" id=\"mediafire-link\">ici</a> pour accéder aux fichiers.",
+                hashtag: "<a href=\"https://x.com/Kelonio3DS\" target=\"_blank\">#TeAmoKelonio</a>",
+                footer: "Rejoignez-nous sur <a href=\"https://discord.gg/8Fv8GDg\" target=\"_blank\">Discord</a> pour toute question !",
+                processing: "En cours, veuillez patienter...",
+                selectLanguage: "Sélectionner la langue"
+            },
+            it: {
+                title: "Link Manuale",
+                loading: "Caricamento del link...",
+                linkText: "Clicca <a onclick=\"abrirEnlace('{url}')\" id=\"mediafire-link\">qui</a> per accedere ai file.",
+                hashtag: "<a href=\"https://x.com/Kelonio3DS\" target="_blank\">#TeAmoKelonio</a>",
+                footer: "Visita il nostro <a href=\"https://discord.gg/8Fv8GDg\" target=\"_blank\">Discord</a> per qualsiasi domanda!",
+                processing: "Elaborazione in corso...",
+                selectLanguage: "Seleziona lingua"
+            },
+            pt: {
+                title: "Link Manual",
+                loading: "Carregando link...",
+                linkText: "Clique <a onclick=\"abrirEnlace('{url}')\" id=\"mediafire-link\">aqui</a> para acessar os archivos.",
+                hashtag: "<a href=\"https://x.com/Kelonio3DS\" target="_blank\">#TeAmoKelonio</a>",
+                footer: "Visite-nos no <a href=\"https://discord.gg/8Fv8GDg\" target=\"_blank\">Discord</a> para qualquer dúvida!",
+                processing: "Processando, por favor aguarde...",
+                selectLanguage: "Selecionar idioma"
+            },
+            de: {
+                title: "Manueller Link",
+                loading: "Link wird geladen...",
+                linkText: "Klicken Sie <a onclick=\"abrirEnlace('{url}')\" id=\"mediafire-link\">hier</a>, um auf die Dateien zuzugreifen.",
+                hashtag: "<a href=\"https://x.com/Kelonio3DS\" target="_blank\">#TeAmoKelonio</a>",
+                footer: "Besuchen Sie uns auf <a href=\"https://discord.gg/8Fv8GDg\" target=\"_blank\">Discord</a> bei Fragen!",
+                processing: "Verarbeitung, bitte warten...",
+                selectLanguage: "Sprache auswählen"
+            },
+            ja: {
+                title: "マニュアルリンク",
+                loading: "リンクを読み込んでいます...",
+                linkText: "<a onclick=\"abrirEnlace('{url}')\" id=\"mediafire-link\">ここ</a>をクリックしてファイルにアクセスしてください。",
+                hashtag: "<a href=\"https://x.com/Kelonio3DS\" target="_blank\">#TeAmoKelonio</a>",
+                footer: "ご質問がある場合は、<a href=\"https://discord.gg/8Fv8GDg\" target=\"_blank\">Discord</a>でご連絡ください！",
+                processing: "処理中、お待ちください...",
+                selectLanguage: "言語を選択"
+            }
+        };
+
+        function mostrarEnlace(lang = 'en') {
+            try {
+                document.documentElement.lang = lang;
+                document.title = translations[lang].title;
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const formId = urlParams.get('form') || '1';
+
+                const mediaFireLinks = {
+                    '1': 'https://www.mediafire.com/folder/yzwqlf4xqn8bc/Semibrick', // SEMIBRICK SWITCH
+                    '2': 'https://www.mediafire.com/folder/icaakl7n60ptn/SWITCH+Cambiar+SD', // CAMBIAR SD
+                    '3': 'https://www.mediafire.com/folder/sijc0y4aifdi7/Checkpoint', // CHECKPOINT
+                    '4': 'https://www.mediafire.com/folder/47k10pw9b5hsm/DBI', // DBI
+                    '5': 'https://www.mediafire.com/folder/egch0p46qjzey/Ebook', // EBOOK
+                    '6': 'https://www.mediafire.com/folder/6tkvnsj5b73j1/Tesla+-+Edizon', // EDIZON
+                    '7': 'https://www.mediafire.com/folder/n4fl15kgn7u81/Tesla+-+Emuibo', // EMUIBO 
+                    '8': 'https://www.mediafire.com/folder/xcv1pfxmj1s12/FTP', // FTP
+                    '9': 'https://www.mediafire.com/folder/cogxokg4rgcpp/Pack+Hacks', // PACK MÁGICO
+                    '10': 'https://www.mediafire.com/folder/wuu4emxwbobiy/Jksv', // JKSV 
+                    '11': 'https://www.mediafire.com/folder/g89x368gnabs8/Lan-Play', // LAN PLAY
+                    '12': 'https://www.mediafire.com/folder/3plsxegs4ke3t/Mission+control', // MISSION CONTROL
+                    '13': 'https://www.mediafire.com/folder/cbpvbdaaicqif/SWITCH+Modo+Incógnito', // MODO INCÓGNITO 
+                    '14': 'https://www.mediafire.com/folder/tt60j41yqsb8a/NXDUMPTOOL', // NXDUMP
+                    '15': 'https://www.mediafire.com/folder/o0x6y8cvay5lv/Nxthemes', // NXTHEMES
+                    '16': 'https://www.mediafire.com/folder/xb2widlsaza6u/HACK+MARIKO+-+LITE', // PACK MARIKO 
+                    '17': 'https://www.mediafire.com/folder/tlk8ihcikxxkb/Pkhex', // PKHEX
+                    '18': 'https://www.mediafire.com/folder/r35ofnnts1reb/Pplay', // PPLAY
+                    '19': 'https://www.mediafire.com/folder/3ojbit8stzhqx/Rekado', // REKADO
+                    '20': 'https://www.mediafire.com/folder/3ijmiyy8xa171/Tesla+-+Systune', // SYSTUNE
+                    '21': 'https://www.mediafire.com/folder/9r0dpoy4dx1hq/Tegra', // TEGRA
+                    '22': 'https://www.mediafire.com/folder/9j2slv41991eo/Tesla', // TESLA 
+                    '23': 'https://www.mediafire.com/folder/qufccsnm54cyz/TEST+MARIKO', // TEST MARIKO   
+                    '100': '' // Empty
+                };
+
+                const mediaFireUrl = mediaFireLinks[formId] || mediaFireLinks['1'];
+                const linkText = translations[lang].linkText.replace('{url}', mediaFireUrl);
+
+                document.body.innerHTML = `
+                    <div class="content">
+                        <div class="language-selector">
+                            <select id="language-select" onchange="mostrarEnlace(this.value)">
+                                <option value="es" ${lang === 'es' ? 'selected' : ''}>Español</option>
+                                <option value="en" ${lang === 'en' ? 'selected' : ''}>English</option>
+                                <option value="fr" ${lang === 'fr' ? 'selected' : ''}>Français</option>
+                                <option value="it" ${lang === 'it' ? 'selected' : ''}>Italiano</option>
+                                <option value="pt" ${lang === 'pt' ? 'selected' : ''}>Português</option>
+                                <option value="de" ${lang === 'de' ? 'selected' : ''}>Deutsch</option>
+                                <option value="ja" ${lang === 'ja' ? 'selected' : ''}>日本語</option>
+                            </select>
+                        </div>
+                        <p></p>
+                        <p>${linkText}</p>
+                        <p class="hashtag">${translations[lang].hashtag}</p>
+                        <div id="loading">${translations[lang].processing}</div>
+                    </div>
+                    <div class="footer">
+                        <p>${translations[lang].footer}</p>
+                        <img src="https://media.discordapp.net/attachments/1075818158297980969/1409721344022544445/34_hf_3.png?ex=68af118f&is=68adc00f&hm=c768a6c096375c34a4852f37dff2ffd64dca70fe79e7338a930a03c93383e614&=&format=webp&quality=lossless&width=674&height=674" alt="Discord Logo" onerror="this.src='https://discord.com/assets/1c8a54f25d101bdc607cec7228247a9a.png'; console.error('Error al cargar logo de Discord');">
+                    </div>
+                `;
+                console.log('Contenido renderizado correctamente');
+            } catch (error) {
+                console.error('Error en mostrarEnlace:', error);
+                document.body.innerHTML = `
+                    <div class="content">
+                        <p>Error al cargar el contenido. Por favor, intenta de nuevo.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function abrirEnlace(mediaFireUrl) {
+            const amazonUrl = 'https://amzn.to/4lJC3tK';
+            const lang = document.documentElement.lang || 'en';
+            try {
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('loading').innerText = translations[lang].processing;
+
+                // Abrir MediaFire en una nueva pestaña
+                console.log('Abriendo MediaFire en nueva pestaña:', mediaFireUrl);
+                window.open(mediaFireUrl, '_blank');
+
+                // Redirigir la ventana actual a Amazon después de un pequeño retraso
+                setTimeout(() => {
+                    console.log('Redirigiendo ventana actual a Amazon:', amazonUrl);
+                    document.getElementById('loading').style.display = 'none';
+                    window.location.href = amazonUrl;
+                }, 100);
+            } catch (error) {
+                console.error('Error en abrirEnlace:', error);
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        window.onload = () => {
+            try {
+                console.log('Iniciando carga de página');
+                mostrarEnlace('en'); // Inglés por defecto
+            } catch (error) {
+                console.error('Error en window.onload:', error);
+                document.body.innerHTML = `
+                    <div class="content">
+                        <p>Error al cargar la página. Por favor, intenta de nuevo.</p>
+                    </div>
+                `;
+            }
+        };
+    </script>
+</head>
+<body>
+    <p id="initial-loading">Loading...</p>
+</body>
+</html>
